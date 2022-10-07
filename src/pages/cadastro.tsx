@@ -2,22 +2,6 @@ import { Link } from "react-router-dom";
 import MenuSair from "../components/menuSair";
 
 
-/*  
-<option value="add" id="add-btn">Adicionar categoria</option>
-var sel_ele = (document.getElementById('sel_opt') as HTMLInputElement).value;
-var input_val;
-var add_cat =document.getElementById('add-btn')!;
-var input_ele = (document.getElementById('new-opt') as HTMLInputElement).value;
-
-    add_cat.addEventListener('click', function() {
-    input_val = input_ele.valueOf();
-    if(input_val.trim() != ''){
-        sel_ele += '<option>' +input_val+ '</option>';
-        
-    }
-});*/
-
-
 export default function CadastroEquip() {
   return (
     <div className='max-w-7xl mx-auto flex flex-col items-center'>
@@ -56,7 +40,7 @@ export default function CadastroEquip() {
             <option value="audi">Audi</option>
         </select>
 
-        <Link to='/cadFinal' 
+        <Link to='/cadastro_finalizado' 
         className='my-4 flex w-7xl px-16 py-3 text-md bg-black text-white hover:bg-gray-900 '
         >Cadastrar</Link>
         <Link to='/menu' 

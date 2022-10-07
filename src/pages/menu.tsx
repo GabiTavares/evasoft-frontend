@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import MenuSair from "../components/menuSair";
 
-function NewOpt(){
-
-}
 
 const Menu = () => {
     return (
