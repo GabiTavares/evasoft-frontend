@@ -1,99 +1,80 @@
 import React from 'react'
 import api from './api';
-import Selecao from './components/Select';
 import './styles/main.css'
+import CadFinal from './pages/cadFinalizado'
+import CadastroEquip from './pages/cadastro'
+import ConsultCat from './pages/catálogo'
+import Diagnostico from './pages/falhas'
+import Menu from './pages/menu'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 class App extends React.Component {
     
   async componentDidMount() {
-    const response = await api.get('http://localhost:5000/marcas')
-    console.log(response.data)
-    this.setState({users: response.data})
+    const response = await api.get('http://localhost:5000/api/marca')
+    const response2 = await api.get('http://localhost:5000/api/modelo')
+    const response3 = await api.get('http://localhost:5000/api/motor')
+    const response4 = await api.get('http://localhost:5000/api/ano')
+    const response5 = await api.get('http://localhost:5000/api/falha')
+    const response6 = await api.get('http://localhost:5000/api/catalogo')
+    
+    //console.log(response.data)
+    // console.log(response2.data)
+    // console.log(response3.data)
+    // console.log(response4.data)
+    
+    
+    this.setState({
+      marca: response.data,
+      modelo: response2.data,
+      motor: response3.data,
+      ano: response4.data,
+      causa: response5.data,
+      sintoma: response5.data,
+      marcaCat: response6.data,
+      codigo: response6.data,
+      componente: response6.data,
+      sistema: response6.data,
+    })
   }
+  
   state = {
-    users: [],
+    marca: [],
+    modelo:[],
+    ano:[],
+    motor:[],
+    causa: [],
+    sintoma: [],
+    codigo: [],
+    componente: [],
+    sistema: [],
+    marcaCat: [],
+
   }
   render(){
     
 
-    const {users} = this.state;
-    //console.log(users)
-    if (users.length > 0) {
+    const vArray = this.state;
+    console.log(vArray)
+    if (vArray.marca.length > 0) {
       return(
       <div>
-        <Selecao
-        options = {users}
+        <Router>
+          <Routes>
+            <Route path='/' exact element={<Menu />} />
+            <Route path='/cadastro' element={<CadastroEquip options={vArray} />}/>
+            <Route path='/cadastro_finalizado' element={<CadFinal />}/>
+            <Route path='/catalogo' element={<ConsultCat options={vArray} />}/>
+            <Route path='/falha' element={<Diagnostico options={vArray} />}/>
+          </Routes>
+        </Router>
         
-        />
       </div>
       )
     }
   }
 }
 
-// interface Users {
-//   id: string;
-//   name: string;
-// }
-
-
-
-// function App() {
-  
-
-//     const [users, setUsers] = useState<Users[]>([])
-
-
-//     useEffect(() => {
-//       fetch('http://localhost:5001/users', {
-//         method: 'GET',
-//         headers: {
-//           'Content-Type' : 'application/json',
-//         },
-//         mode: 'cors'
-//       })
-//       .then(response => response.json())
-//       .then(data => {
-//         setUsers(data);
-//       })
-//       .catch((err) => console.log(err))
-//     }, [])
-
-//     const makeAPICall = async () => {
-//       try {
-//         const response = await fetch('http://localhost:5001', {
-//           mode:'cors',
-//           method: 'GET',
-//           headers: {
-//                   'Content-Type' : 'application/json',
-//                 },
-                
-//         });
-//         const data = await response.json();
-//         console.log({data})
-//         setMarcas([data])
-//       }
-//       catch (e) {
-//         console.log(e)
-//       }
-//     }
-    
-//     useEffect(() => {
-//       makeAPICall()
-//     }, [])
-
-    
-//     return (
-//       <div>
-//         {users.map(user => {
-//           return(
-//             <p key={user.id}>{user.name}</p>
-//           )
-//         })}
-//       </div>
-//     )
-  
-// }
 
 export default App;
 
