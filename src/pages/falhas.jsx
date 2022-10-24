@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import '../styles/style_cat.css';
-import shadows from '@mui/material/styles/shadows';
+
 
 export default function Diagnostico({options}) {
   //Select: 
@@ -52,24 +52,32 @@ const handleShowTable = () => {
   const getMarca = values.marca;
   setShowTable(getMarca);
 }
+const [showhide, setShowHide] = useState('');
+
+const handleShowHide = (e) => {
+  const getMarca = e.target.value;
+  setShowHide(getMarca);
+  setMarca({value: e.target.value});
+}
 
 //procura pelo botão para aparecer tabela
 const handleSearch = () => {
-  //mapeamento da tabela para pegar a coluna MARCA
-  const brand = options.marcaCat.map((m) => (m.MARCA));
+  //mapeamento do catalogo para pegar a coluna MARCA
+  const brand = options.Catalogo.map((m) => (m.MARCA));
   //Convertendo os valores em um único, já que são iguais
   var brandConvert = [...new Set(brand)];
   //convertendo os valores das marcas para ficarem iguais, com a primeira letra em maiúsculo
   const convertValueMarca = values.marca[0].toUpperCase() + values.marca.slice(1).toLowerCase();
-  //condição para verificar se a marca selecionada está no catálogo de falha
-  {if(convertValueMarca === brandConvert.toString()){
-    handleShowTable();
-  }else {
-    setShowTable(false);
-    alert('Ainda não possui diagnóstico para: ' + values.marca)
+
+    {if(convertValueMarca === brandConvert.toString()){
+      handleShowTable();
+    }else {
+      setShowTable(false)
+      alert('Ainda não possui catálogo para: '+ values.marca)
+    }
   }
-}
-}
+  }
+
 
   return (
     <div className='flex flex-col'>
@@ -77,11 +85,26 @@ const handleSearch = () => {
             Diagnóstico de Falha</h1>
     <div className="flex flex-row">
         <div id='divForm' className=" flex flex-col items-center">
+        {
+                  showhide === 'TOYOTA' && (
+                    <input 
+                  id='serie'
+                  name='serie'
+                  required='required'
+                  type='text'
+                  className='border-2 focus:outline-none'
+                  placeholder='Nº de série'
+                  onChange={handleChangesValues}
+                  //carregar json antes da validação/cadastro
+                />
+                  )
+                }
         <form  onSubmit={handleSubmit} className="flex flex-col items-center ml-11">
         <select
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           name='marca'
           onChange={(e) => {
+            (handleShowHide(e))
             (handleChangesValues(e))
           }}
           >
@@ -174,6 +197,7 @@ const handleSearch = () => {
                 <TableCell align='center'>Descrição</TableCell>
                 <TableCell align='center'>Código</TableCell>
                 <TableCell align='center'>Probabilidade</TableCell>
+                
               </TableRow>
               </TableHead>
               <TableBody>
@@ -193,6 +217,8 @@ const handleSearch = () => {
                           <TableCell align='center'>{o.ROOTCAUSE}</TableCell>
                           <TableCell align='center'></TableCell>
                           <TableCell align='center'></TableCell>
+                          {/* <TableCell><button>Confirmar</button>
+                          </TableCell> */}
                       </TableRow>
                   ))}
 

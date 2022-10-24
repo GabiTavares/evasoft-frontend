@@ -12,11 +12,13 @@ class App extends React.Component {
     
   async componentDidMount() {
     const response = await api.get('http://localhost:5000/api/marca')
+    const response1 = await api.get('http://localhost:5000/api/equipamentos')
     const response2 = await api.get('http://localhost:5000/api/modelo')
     const response3 = await api.get('http://localhost:5000/api/motor')
     const response4 = await api.get('http://localhost:5000/api/ano')
     const response5 = await api.get('http://localhost:5000/api/falha')
     const response6 = await api.get('http://localhost:5000/api/catalogo')
+    const response7 = await api.get('http://localhost:5000/api/decision')
     
     //console.log(response.data)
     // console.log(response2.data)
@@ -26,29 +28,27 @@ class App extends React.Component {
     
     this.setState({
       marca: response.data,
+      id: response1.data,
       modelo: response2.data,
       motor: response3.data,
       ano: response4.data,
       causa: response5.data,
       sintoma: response5.data,
-      marcaCat: response6.data,
-      codigo: response6.data,
-      componente: response6.data,
-      sistema: response6.data,
+      Catalogo: response6.data,
+      idEquip: response7.data,
     })
   }
   
   state = {
     marca: [],
+    id: [],
     modelo:[],
     ano:[],
     motor:[],
     causa: [],
     sintoma: [],
-    codigo: [],
-    componente: [],
-    sistema: [],
-    marcaCat: [],
+    Catalogo: [],
+    idEquip: [],
 
   }
   render(){

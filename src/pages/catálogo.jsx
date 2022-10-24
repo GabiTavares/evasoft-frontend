@@ -27,15 +27,6 @@ const [values, setValues] = useState();
       [event.target.name]: event.target.value}))
   }
 
-  //Show Table
-
-  const [showtable, setShowTable] = useState('');
-
-  const handleShowTable = () => {
-    const getMarca = values.marca;
-    setShowTable(getMarca);
-  }
-
 
 const handleSubmit = (event) => {
   event.preventDefault();
@@ -58,68 +49,71 @@ const handleSubmit = (event) => {
     setPage(0);
   };
 
+  //Show Table
+
+  const [showtable, setShowTable] = useState('');
+
+  const handleShowTable = () => {
+    const getMarca = values.marca;
+    setShowTable(getMarca);
+  }
+  
   //procura pelo botão para aparecer tabela
   const handleSearch = () => {
-    //mapeamento da tabela para pegar a coluna MARCA
-    const brand = options.marcaCat.map((m) => (m.MARCA));
-    //Convertendo os valores em um único, já que são iguais
-    var brandConvert = [...new Set(brand)];
-    //convertendo os valores das marcas para ficarem iguais, com a primeira letra em maiúsculo
-    const convertValueMarca = values.marca[0].toUpperCase() + values.marca.slice(1).toLowerCase();
+  //mapeamento do catalogo para pegar a coluna MARCA
+  const brand = options.Catalogo.map((m) => (m.MARCA));
+  //Convertendo os valores em um único, já que são iguais
+  var brandConvert = [...new Set(brand)];
+  //convertendo os valores das marcas para ficarem iguais, com a primeira letra em maiúsculo
+  const convertValueMarca = values.marca[0].toUpperCase() + values.marca.slice(1).toLowerCase();
 
     {if(convertValueMarca === brandConvert.toString()){
       handleShowTable();
     }else {
       setShowTable(false)
-      alert('Ainda não possui catálogo para:'+ values.marca)
+      alert('Ainda não possui catálogo para: '+ values.marca)
     }
   }
   }
 
-  //fazer uma função para filtrar os valores apenas com a marca igual ao selecionado
-  //.filter(values.marca === brandConvert ) return apenas o codigo, componente e sistema referente aquela marca
-
   return (
-
     
-    //quando for de outras marcas tem que colocar todas infos
     <div id="div_total" className='flex flex-col'>
         <h1 className='text-4xl mt-10 mb-10 text-center'>
             Consulta de Catálogo</h1>
     <div className="flex flex-row justify-between">
         <div id='divForm' className=" flex flex-col items-center">
         <form  onSubmit={handleSubmit} className="flex flex-col items-center ml-11">
-            <div className="flex flex-col justify-center">                
-
-          <select
+            <div className="flex flex-col justify-center">
+          
+            <select
+          className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           required='required'
           name='marca'
-          className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           onChange={(e) => {
             (handleChangesValues(e))
           }}
           >
-          <option>Marca</option>
-          {options.marca.map((option, i) => (
-            
+          <option value=''>Marca</option>
+          {options.marca.map((option, i) => 
+          (
           <option className='text-black' key={i} value={option.id}>
               {option.MARCA}
             </option> 
-          
+            
           )
           )}  
 
           </select>
           <select
-          className="my-4 border-2 border-gray-300 px-10 py-3 text-md text-black text-center"
+          className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           required='required'
           name='modelo'
           onChange={(e) => {
             (handleChangesValues(e))
           }}
-          
           >
-          <option>Modelo</option>
+          <option value=''>Modelo</option>
           {options.modelo.map((option, i) => (
             
           <option className='text-black' key={i} value={option.id}>
@@ -204,7 +198,10 @@ const handleSubmit = (event) => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {options.codigo.filter(val => {
+                  {options.Catalogo.filter(({MARCA}) => 
+                      MARCA.toUpperCase() === values.marca 
+                        )
+                        .filter(val => {
                         if (busca === ''){
                             return val;
                         }else if(
@@ -230,7 +227,7 @@ const handleSubmit = (event) => {
             <TablePagination
             rowsPerPageOptions={[10, 25, 50, 100]}
             component="div"
-            count={options['codigo'].length}
+            count={options['Catalogo'].length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
