@@ -30,7 +30,7 @@ const handleSubmit = (event) => {
 
 //Paginação
 const [page, setPage] = useState(0);
-const [rowsPerPage, setRowsPerPage] = useState(10);
+const [rowsPerPage, setRowsPerPage] = useState(8);
 
 
 const handleChangePage = (event, newPage) => {
@@ -46,6 +46,12 @@ const handleChangeRowsPerPage = (event) => {
 const [busca, setBusca] = useState('');
 
 const [showhide, setShowHide] = useState('');
+const [showinput, setShowInput] = useState('');
+const handleShowInput = (e) => {
+  const getMarca = e.target.value;
+  setShowInput(getMarca);
+  setMarca({value: e.target.value});
+}
 
 const handleShowHide = (e) => {
   const getMarca = e.target.value;
@@ -61,8 +67,7 @@ useEffect(() => {
   .then((data) => setDados(data))
 },[])
 
-console.log(dados)
-
+const mapSerie = options.id.map((v) => v.SERIE)
 
   return (
     <div className='flex flex-col'>
@@ -71,7 +76,7 @@ console.log(dados)
     <div className="flex flex-row">
         <div id='divForm' className=" flex flex-col items-center">
         {
-                  showhide === 'TOYOTA' && (
+                  showinput === 'TOYOTA' && (
                     <input 
                   id='serie'
                   name='serie'
@@ -89,6 +94,7 @@ console.log(dados)
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           name='marca'
           onChange={(e) => {
+            (handleShowInput(e)),
             (handleChangesValues(e))
           }}
           >
@@ -184,33 +190,31 @@ console.log(dados)
               <TableBody>
                 {options.id.filter(id => {
                     if(values.marca === ''){
-                        return id
+                      return id;
+                        
                     }else if(
                         id.MARCA.toUpperCase().includes(values.marca) &&
                         id.MODELO.toUpperCase().includes(values.modelo) &&
                         id.ANO.toString().toUpperCase().includes(values.ano) &&
-                        id.MOTOR.toUpperCase().includes(values.motor))
+                        id.MOTOR.toUpperCase().includes(values.motor) ||
+                        mapSerie.includes(values.serie))
                         {
                         return id
                     }
-                }
+                    }
                 )
                 .map((opi,i) => {
                         return <>
                             {dados
                             .filter(val => {
-                              if(val.id === ''){
-                                return val;
-                              }else if(
+                              if(
                                 val.id.toString() === opi.ID.toString()
                               ){
                                 return val
                               }
                             })
                             .filter(v => {
-                              if (busca === ''){
-                                  return v;
-                              }else if(
+                              if(
                                   v.ROOTCAUSE.toString().toLowerCase().includes(busca.toLowerCase()) ||
                                   v.Symptoms.toString().toLowerCase().includes(busca.toLowerCase()) ||
                                   v.SpareParts.toString().toLowerCase().includes(busca.toLowerCase())
@@ -234,9 +238,9 @@ console.log(dados)
                 </Table>
                 </TableContainer>
                 <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[8,10, 25, 50, 100]}
           component="div"
-          count={options['causa'].length}
+          count={dados.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

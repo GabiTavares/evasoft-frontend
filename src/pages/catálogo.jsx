@@ -74,6 +74,8 @@ const handleSubmit = (event) => {
   }
   }
 
+
+
   return (
     
     <div id="div_total" className='flex flex-col'>

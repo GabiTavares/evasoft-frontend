@@ -7,7 +7,6 @@ import ConsultCat from './pages/catálogo'
 import Diagnostico from './pages/falhas'
 import Menu from './pages/menu'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Page from './pages/componente';
 
 class App extends React.Component {
     
@@ -17,9 +16,7 @@ class App extends React.Component {
     const response2 = await api.get('http://localhost:5000/api/modelo')
     const response3 = await api.get('http://localhost:5000/api/motor')
     const response4 = await api.get('http://localhost:5000/api/ano')
-    const response5 = await api.get('http://localhost:5000/api/falha')
     const response6 = await api.get('http://localhost:5000/api/catalogo')
-    const response7 = await api.get('http://localhost:5000/api/decision')
     
     //console.log(response.data)
     // console.log(response2.data)
@@ -33,10 +30,7 @@ class App extends React.Component {
       modelo: response2.data,
       motor: response3.data,
       ano: response4.data,
-      causa: response5.data,
-      sintoma: response5.data,
       Catalogo: response6.data,
-      idEquip: response7.data,
     })
   }
   
@@ -46,10 +40,7 @@ class App extends React.Component {
     modelo:[],
     ano:[],
     motor:[],
-    causa: [],
-    sintoma: [],
     Catalogo: [],
-    idEquip: [],
 
   }
   render(){
@@ -67,7 +58,6 @@ class App extends React.Component {
             <Route path='/cadastro_finalizado' element={<CadFinal />}/>
             <Route path='/catalogo' element={<ConsultCat options={vArray} />}/>
             <Route path='/falha' element={<Diagnostico options={vArray} />}/>
-            <Route path='/ids' element={<Page options={vArray} />}/>
           </Routes>
         </Router>
         
