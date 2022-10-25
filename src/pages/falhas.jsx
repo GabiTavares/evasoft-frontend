@@ -67,7 +67,7 @@ useEffect(() => {
   .then((data) => setDados(data))
 },[])
 
-const mapSerie = options.id.map((v) => v.SERIE)
+  const mapSerie = options.id.map((v) => v.SERIE)
 
   return (
     <div className='flex flex-col'>
@@ -196,7 +196,7 @@ const mapSerie = options.id.map((v) => v.SERIE)
                         id.MARCA.toUpperCase().includes(values.marca) &&
                         id.MODELO.toUpperCase().includes(values.modelo) &&
                         id.ANO.toString().toUpperCase().includes(values.ano) &&
-                        id.MOTOR.toUpperCase().includes(values.motor) ||
+                        id.MOTOR.toUpperCase().includes(values.motor) &&
                         mapSerie.includes(values.serie))
                         {
                         return id

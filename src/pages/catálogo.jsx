@@ -35,7 +35,7 @@ const handleSubmit = (event) => {
   
   //Paginação
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
 
 
   const handleChangePage = (event, newPage) => {
@@ -51,29 +51,20 @@ const handleSubmit = (event) => {
 
   const [showtable, setShowTable] = useState('');
 
-  const handleShowTable = () => {
-    const getMarca = values.marca;
+  const handleShowTable = (e) => {
+    const getMarca = e.target.value;
     setShowTable(getMarca);
+    setMarca({value: e.target.value});
   }
+  const [showinput, setShowInput] = useState('');
+  const handleShowInput = (e) => {
+  const getMarca = e.target.value;
+  setShowInput(getMarca);
+  setMarca({value: e.target.value});
+}
   
-  //procura pelo botão para aparecer tabela
-  const handleSearch = () => {
-  //mapeamento do catalogo para pegar a coluna MARCA
-  const brand = options.Catalogo.map((m) => (m.MARCA));
-  //Convertendo os valores em um único, já que são iguais
-  var brandConvert = [...new Set(brand)];
-  //convertendo os valores das marcas para ficarem iguais, com a primeira letra em maiúsculo
-  const convertValueMarca = values.marca[0].toUpperCase() + values.marca.slice(1).toLowerCase();
 
-    {if(convertValueMarca === brandConvert.toString()){
-      handleShowTable();
-    }else {
-      setShowTable(false)
-      alert('Ainda não possui catálogo para: '+ values.marca)
-    }
-  }
-  }
-
+  const mapSerie = options.Catalogo.map((v) => v.SERIE)
 
 
   return (
@@ -85,12 +76,27 @@ const handleSubmit = (event) => {
         <div id='divForm' className=" flex flex-col items-center">
         <form  onSubmit={handleSubmit} className="flex flex-col items-center ml-11">
             <div className="flex flex-col justify-center">
+            {
+                  showinput === 'TOYOTA' && (
+                    <input 
+                  id='serie'
+                  name='serie'
+                  required='required'
+                  type='text'
+                  className='border-2 focus:outline-none'
+                  placeholder='Nº de série'
+                  onChange={handleChangesValues}
+                  //carregar json antes da validação/cadastro
+                />
+                  )
+                }
           
             <select
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           required='required'
           name='marca'
           onChange={(e) => {
+            (handleShowInput(e)),
             (handleChangesValues(e))
           }}
           >
@@ -141,7 +147,11 @@ const handleSubmit = (event) => {
           <select
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           name='motor'
-          onChange={handleChangesValues}
+          onChange={(e) => 
+            {
+              (handleShowTable(e)),
+              (handleChangesValues(e))
+            }}
           >
           <option>Motor</option>
           {options.motor.map((option, i) => (
@@ -154,16 +164,6 @@ const handleSubmit = (event) => {
           </select>
 
           </div>
-
-          <button
-        className='my-4 flex px-16 py-3 text-md bg-black text-white hover:bg-gray-900 '
-        name="procurar"
-        id='link-cad'
-        type='submit'
-        onClick={() => 
-          handleSearch()
-      }
-        >Procurar</button>
 
           </form>
         
@@ -198,13 +198,19 @@ const handleSubmit = (event) => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                  {options.Catalogo.filter(({MARCA}) => 
-                      MARCA.toUpperCase() === values.marca 
+                  {options.Catalogo.filter((v) => 
+                      {if(
+                        v.MARCA.toUpperCase().includes(values.marca) &&
+                        v.MODELO.toUpperCase().includes(values.modelo) &&
+                        v.ANO.toString().toUpperCase().includes(values.ano) &&
+                        v.MOTOR.toUpperCase().includes(values.motor) ||
+                        mapSerie.includes(values.serie)
+                        ){
+                        return v;
+                      }} 
                         )
                         .filter(val => {
-                        if (busca === ''){
-                            return val;
-                        }else if(
+                        if(
                             val.CODIGO.toString().toLowerCase().includes(busca.toLowerCase()) ||
                             val.COMPONENTE.toLowerCase().includes(busca.toLowerCase()) ||
                             val.SISTEMA.toLowerCase().includes(busca.toLowerCase())
@@ -225,7 +231,7 @@ const handleSubmit = (event) => {
             </Table>
             </TableContainer>
             <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100]}
+            rowsPerPageOptions={[8, 10, 25, 50, 100]}
             component="div"
             count={options['Catalogo'].length}
             rowsPerPage={rowsPerPage}
