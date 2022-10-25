@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/style_cat.css';
 import { useState } from "react";
-import baseHyster from '../BaseHyster.json';
 import { Link } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +10,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-import { info } from 'autoprefixer';
 
 
 export default function ConsultCat({options}) {

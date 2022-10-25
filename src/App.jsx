@@ -7,6 +7,7 @@ import ConsultCat from './pages/catálogo'
 import Diagnostico from './pages/falhas'
 import Menu from './pages/menu'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Page from './pages/componente';
 
 class App extends React.Component {
     
@@ -66,6 +67,7 @@ class App extends React.Component {
             <Route path='/cadastro_finalizado' element={<CadFinal />}/>
             <Route path='/catalogo' element={<ConsultCat options={vArray} />}/>
             <Route path='/falha' element={<Diagnostico options={vArray} />}/>
+            <Route path='/ids' element={<Page options={vArray} />}/>
           </Routes>
         </Router>
         

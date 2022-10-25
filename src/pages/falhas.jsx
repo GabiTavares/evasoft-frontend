@@ -5,7 +5,7 @@ import { Table,
   TableHead, 
   TablePagination, 
   TableRow } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
@@ -45,13 +45,6 @@ const handleChangeRowsPerPage = (event) => {
 //filtro
 const [busca, setBusca] = useState('');
 
-//Show Table
-const [showtable, setShowTable] = useState('');
-
-const handleShowTable = () => {
-  const getMarca = values.marca;
-  setShowTable(getMarca);
-}
 const [showhide, setShowHide] = useState('');
 
 const handleShowHide = (e) => {
@@ -59,24 +52,16 @@ const handleShowHide = (e) => {
   setShowHide(getMarca);
   setMarca({value: e.target.value});
 }
+//Filtragem de informações,
+//Trazendo as informações da Query
+const [dados, setDados] = useState([]);
+useEffect(() => {
+  fetch('http://localhost:5000/api/decision2')
+  .then((res) => res.json())
+  .then((data) => setDados(data))
+},[])
 
-//procura pelo botão para aparecer tabela
-const handleSearch = () => {
-  //mapeamento do catalogo para pegar a coluna MARCA
-  const brand = options.Catalogo.map((m) => (m.MARCA));
-  //Convertendo os valores em um único, já que são iguais
-  var brandConvert = [...new Set(brand)];
-  //convertendo os valores das marcas para ficarem iguais, com a primeira letra em maiúsculo
-  const convertValueMarca = values.marca[0].toUpperCase() + values.marca.slice(1).toLowerCase();
-
-    {if(convertValueMarca === brandConvert.toString()){
-      handleShowTable();
-    }else {
-      setShowTable(false)
-      alert('Ainda não possui catálogo para: '+ values.marca)
-    }
-  }
-  }
+console.log(dados)
 
 
   return (
@@ -104,7 +89,6 @@ const handleSearch = () => {
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           name='marca'
           onChange={(e) => {
-            (handleShowHide(e))
             (handleChangesValues(e))
           }}
           >
@@ -155,6 +139,7 @@ const handleSearch = () => {
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           name='motor'
           onChange={(e) => {
+            (handleShowHide(e)),
             (handleChangesValues(e))
           }}
           >
@@ -167,11 +152,7 @@ const handleSearch = () => {
           )
           )}  
           </select>
-          <button
-        className='my-4 flex px-16 py-3 text-md bg-black text-white hover:bg-gray-900 '
-        id='link-cad'
-        onClick={() => handleSearch()}
-        type='submit'>Procurar</button>
+      
           </form>
       
         <Link to='/' 
@@ -188,8 +169,8 @@ const handleSearch = () => {
             onChange={e => setBusca(e.target.value)}
             placeholder="Digite o sintoma, a peça ou a descrição da falha.."/>
             </div>
-            {showtable && (
-              <div>
+            {showhide && (
+            <div>
               <TableContainer component={Paper}>
               <Table stickyHeader sx={{ minWidth: 550 }} size="small" aria-label="a dense table">
               <TableHead>
@@ -201,31 +182,58 @@ const handleSearch = () => {
               </TableRow>
               </TableHead>
               <TableBody>
-              {options.causa.filter(val => {
-                      if (busca === ''){
-                          return val;
-                      }else if(
-                          val.ROOTCAUSE.toString().toLowerCase().includes(busca.toLowerCase()) ||
-                          val.Symptoms.toString().toLowerCase().includes(busca.toLowerCase())
-                      ){
-                          return val;
-                      }
-                  })
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((o, i) => (
-                      <TableRow key={i}>
-                          <TableCell align='center'>{o.ROOTCAUSE}</TableCell>
-                          <TableCell align='center'></TableCell>
-                          <TableCell align='center'></TableCell>
-                          {/* <TableCell><button>Confirmar</button>
-                          </TableCell> */}
-                      </TableRow>
-                  ))}
-
-          </TableBody>
-          </Table>
-          </TableContainer>
-          <TablePagination
+                {options.id.filter(id => {
+                    if(values.marca === ''){
+                        return id
+                    }else if(
+                        id.MARCA.toUpperCase().includes(values.marca) &&
+                        id.MODELO.toUpperCase().includes(values.modelo) &&
+                        id.ANO.toString().toUpperCase().includes(values.ano) &&
+                        id.MOTOR.toUpperCase().includes(values.motor))
+                        {
+                        return id
+                    }
+                }
+                )
+                .map((opi,i) => {
+                        return <>
+                            {dados
+                            .filter(val => {
+                              if(val.id === ''){
+                                return val;
+                              }else if(
+                                val.id.toString() === opi.ID.toString()
+                              ){
+                                return val
+                              }
+                            })
+                            .filter(v => {
+                              if (busca === ''){
+                                  return v;
+                              }else if(
+                                  v.ROOTCAUSE.toString().toLowerCase().includes(busca.toLowerCase()) ||
+                                  v.Symptoms.toString().toLowerCase().includes(busca.toLowerCase()) ||
+                                  v.SpareParts.toString().toLowerCase().includes(busca.toLowerCase())
+                              ){
+                                  return v;
+                              }
+                          })
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((root, i) => (
+                              <TableRow key={i}>
+                                <TableCell align='center'>{root.ROOTCAUSE}</TableCell>
+                                <TableCell align='center'></TableCell>
+                                <TableCell align='center'></TableCell>
+                              </TableRow>
+                            )
+                            )}
+                              </>
+                    
+                })}
+                </TableBody>
+                </Table>
+                </TableContainer>
+                <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={options['causa'].length}
@@ -234,8 +242,8 @@ const handleSearch = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
     />
-    </div>
-            )}
+            </div>
+          )}
 
         </div>
 
