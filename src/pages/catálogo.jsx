@@ -199,7 +199,9 @@ const handleSubmit = (event) => {
                 </TableHead>
                 <TableBody>
                   {options.Catalogo.filter((v) => 
-                      {if(
+                      {if(values.marca === 'HYSTER'){
+                        return v;
+                      }else if(
                         v.MARCA.toUpperCase().includes(values.marca) &&
                         v.MODELO.toUpperCase().includes(values.modelo) &&
                         v.ANO.toString().toUpperCase().includes(values.ano) &&
@@ -242,7 +244,9 @@ const handleSubmit = (event) => {
       </div>
                   )
                 }
+                 
       </div>
+     
                       
               
         </div>

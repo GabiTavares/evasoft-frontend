@@ -5,6 +5,7 @@ import { Table,
   TableHead, 
   TablePagination, 
   TableRow } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
@@ -47,6 +48,8 @@ const [busca, setBusca] = useState('');
 
 const [showhide, setShowHide] = useState('');
 const [showinput, setShowInput] = useState('');
+const [showButton, setShowButton] = useState('');
+
 const handleShowInput = (e) => {
   const getMarca = e.target.value;
   setShowInput(getMarca);
@@ -58,6 +61,12 @@ const handleShowHide = (e) => {
   setShowHide(getMarca);
   setMarca({value: e.target.value});
 }
+
+const handleValues = (e) => {
+  const getValue = e.target.value;
+  setShowButton(getValue);
+}
+
 //Filtragem de informações,
 //Trazendo as informações da Query
 const [dados, setDados] = useState([]);
@@ -182,7 +191,6 @@ useEffect(() => {
               <TableHead>
               <TableRow>
                 <TableCell align='center'>Descrição</TableCell>
-                <TableCell align='center'>Código</TableCell>
                 <TableCell align='center'>Probabilidade</TableCell>
                 
               </TableRow>
@@ -227,7 +235,7 @@ useEffect(() => {
                               <TableRow key={i}>
                                 <TableCell align='center'>{root.ROOTCAUSE}</TableCell>
                                 <TableCell align='center'></TableCell>
-                                <TableCell align='center'></TableCell>
+                                <input type='radio' value={root.ROOTCAUSE} name='input-radio' onChange={(e) => handleValues(e) }/>
                               </TableRow>
                             )
                             )}
@@ -245,15 +253,20 @@ useEffect(() => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-    />
+            />
+            
             </div>
           )}
 
         </div>
-
-
             
         </div>
+        {showButton && (
+        <button 
+        id='btn-falha'onClick={(e) => {
+          setShowHide(false)
+        }}>Confirmar</button>) }
+        
     </div>
   );
 }

@@ -12,6 +12,28 @@ select {
   justify-content: center;
 }
 
+#btn-falha {
+  font-size:14px;
+  width:117px;
+  height:46px;
+  border-width:1px;
+  color:#fff;
+  border-color:rgba(255, 255, 255, 1);
+  border-top-left-radius:28px;
+  border-top-right-radius:28px;
+  border-bottom-left-radius:28px;
+  border-bottom-right-radius:28px;
+  background:rgba(0, 0, 0, 1);
+
+  margin-top: 10px;
+  margin-left: 85%;
+
+}
+
+#btn-falha:hover {
+  background: rgba(17, 24, 39, 1)
+}
+
 #div_total {
   width: 100%;
 }
