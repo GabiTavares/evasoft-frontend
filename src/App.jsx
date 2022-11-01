@@ -4,7 +4,6 @@ import './styles/main.css'
 import CadFinal from './pages/cadFinalizado'
 import CadastroEquip from './pages/cadastro'
 import ConsultCat from './pages/catálogo'
-import Diagnostico from './pages/falhas'
 import Menu from './pages/menu'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Analise from './pages/decisão';
@@ -58,7 +57,6 @@ class App extends React.Component {
             <Route path='/cadastro' element={<CadastroEquip options={vArray} />}/>
             <Route path='/cadastro_finalizado' element={<CadFinal />}/>
             <Route path='/catalogo' element={<ConsultCat options={vArray} />}/>
-            <Route path='/falha' element={<Diagnostico options={vArray} />}/>
             <Route path='/analise' element={<Analise options={vArray}/>}/>
           </Routes>
         </Router>

@@ -131,7 +131,7 @@ export default function CadastroEquip({options}) {
           required='required'
           name='marca'
           onChange={(e) => {
-            (handleShowHide(e))
+            (handleShowHide(e)),
             (handleChangesValues(e))
           }}
           >
@@ -152,7 +152,7 @@ export default function CadastroEquip({options}) {
           <select
           className="my-4 border-2 border-gray-300 px-10 py-3 text-md text-black text-center"
           onChange={(e) => {
-            (handleShowHide(e))
+            (handleShowHide(e)),
             (handleChangesValues(e))
           }}
           name='modelo'
@@ -174,7 +174,7 @@ export default function CadastroEquip({options}) {
           <select
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           onChange={(e) => {
-            (handleShowHide(e))
+            (handleShowHide(e)),
             (handleChangesValues(e))
           }}
           name='ano'
@@ -194,7 +194,7 @@ export default function CadastroEquip({options}) {
           <select
           className="my-4 border-2 border-gray-300 px-20 py-3 text-md text-black"
           onChange={(e) => {
-            (handleShowHide(e))
+            (handleShowHide(e)),
             (handleChangesValues(e))
           }}
           name='motor'
@@ -213,7 +213,6 @@ export default function CadastroEquip({options}) {
           </select>
 
           </div>
-          
 
           <button
         className='my-4 flex px-16 py-3 text-md bg-black text-white hover:bg-gray-900 '
