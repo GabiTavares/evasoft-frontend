@@ -11,12 +11,12 @@ import Analise from './pages/decisão';
 class App extends React.Component {
     
   async componentDidMount() {
-    const response = await api.get('http://localhost:5000/api/marca')
-    const response1 = await api.get('http://localhost:5000/api/equipamentos')
-    const response2 = await api.get('http://localhost:5000/api/modelo')
-    const response3 = await api.get('http://localhost:5000/api/motor')
-    const response4 = await api.get('http://localhost:5000/api/ano')
-    const response6 = await api.get('http://localhost:5000/api/catalogo')
+    const response = await api.get('http://localhost:5000/marca')
+    const response1 = await api.get('http://localhost:5000/equipamentos')
+    const response2 = await api.get('http://localhost:5000/modelo')
+    const response3 = await api.get('http://localhost:5000/motor')
+    const response4 = await api.get('http://localhost:5000/ano')
+    const response6 = await api.get('http://localhost:5000/catalogo')
     
     //console.log(response.data)
     // console.log(response2.data)
