@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc",
+    "build": "tsc && vite build",
     "start": "vite",
     "preview": "vite preview"
   },
