@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-//import MenuSair from "../components/menuSair";
-
 
 const Menu = () => {
     return (
