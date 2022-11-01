@@ -1,6 +1,8 @@
 {
   "name": "software",
   "version": "1.0.0",
+  "private": true,
+  "homepage" : "https://evasoft.herokuapp.com/",
   "engines": {
     "node": "v16.13.2",
     "npm": "8.1.2"
