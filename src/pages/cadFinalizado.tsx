@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import MenuSair from "../components/menuSair";
 
 export default function CadFinal() {
   return (
